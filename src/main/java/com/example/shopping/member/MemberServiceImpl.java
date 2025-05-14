@@ -20,6 +20,10 @@ public class MemberServiceImpl implements MemberRepository {
     public Member save(Member member) {
         return memberRepository.save(member);
     }
+    @Override
+    public Optional login(String id, String pw) {
+        return memberRepository.login(id, pw);
+    }
 
     @Override
     public Optional<Member> findById(String id) {

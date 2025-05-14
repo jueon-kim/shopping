@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class MemberController {
@@ -51,6 +52,20 @@ public class MemberController {
 
         memberService.save(member);
         return "redirect:/admin/memberlist";
+    }
+
+    @PostMapping("/members/login")
+    public String login (@ModelAttribute Member member, Model model){
+        Optional<Member> result = memberService.login(member.getId(), member.getPw());
+
+        if (result.isPresent()) {
+            model.addAttribute("loginMember", result.get());
+            return "redirect:index";
+        } else {
+            model.addAttribute("error", "로그인 실패");
+            System.out.println("login 성공");
+            return "index";
+        }
     }
 
     }

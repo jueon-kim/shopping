@@ -107,5 +107,25 @@ public class Jdbcmember implements MemberRepository {
         return false;
     }
 
+    @Override
+    public Optional<Object> login(String id, String pw) {
+        String sql = "select * from member where id = ? and pw = ? ";
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ){
+            pstmt.setString(1, id);
+            pstmt.setString(2, pw);
+
+            ResultSet rs = pstmt.executeQuery();
+
+        } catch (SQLException e){
+           e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
 
 }
