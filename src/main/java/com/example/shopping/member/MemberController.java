@@ -26,7 +26,7 @@ public class MemberController {
 
         @GetMapping("/login")
         public String loginPage() {
-            return "login"; // 여기 중요!
+            return "login";
         }
 
     @GetMapping("/join")
@@ -63,9 +63,9 @@ public class MemberController {
             return "redirect:index";
         } else {
             model.addAttribute("error", "로그인 실패");
-            System.out.println("login 성공");
-            return "index";
+            return "login";
         }
     }
+
 
     }

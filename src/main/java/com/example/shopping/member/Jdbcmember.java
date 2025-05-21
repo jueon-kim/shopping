@@ -2,6 +2,7 @@ package com.example.shopping.member;
 
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.*;
@@ -108,17 +109,27 @@ public class Jdbcmember implements MemberRepository {
     }
 
     @Override
-    public Optional<Object> login(String id, String pw) {
+    public Optional<Member> login(String id, String pw) {
         String sql = "select * from member where id = ? and pw = ? ";
 
         try (
                 Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery();
         ){
             pstmt.setString(1, id);
             pstmt.setString(2, pw);
 
-            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getString("id"));
+                member.setPw(rs.getString("pw"));
+                member.setName(rs.getString("name"));
+                member.setPhone(rs.getString("phone"));
+
+                return Optional.of(member); // 로그인 성공 시 회원 객체 반환
+            }
+
 
         } catch (SQLException e){
            e.printStackTrace();

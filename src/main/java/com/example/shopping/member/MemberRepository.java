@@ -8,6 +8,6 @@ public interface MemberRepository {
    Member save(Member member);
    Optional<Member> findById(String id);
 
-   Optional login(String id, String pw);
+   Optional<Member> login(String id, String pw);
    List<Member> findbyAll();
 }

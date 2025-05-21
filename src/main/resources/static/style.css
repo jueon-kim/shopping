@@ -1,0 +1,6 @@
+.contents {
+       position: relative;
+       /* display: contents; */
+       justify-content: center;
+       text-align: center;
+}

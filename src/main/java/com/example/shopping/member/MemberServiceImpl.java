@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberRepository {
         return memberRepository.save(member);
     }
     @Override
-    public Optional login(String id, String pw) {
+    public Optional<Member> login(String id, String pw) {
         return memberRepository.login(id, pw);
     }
 
