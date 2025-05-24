@@ -1,10 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/style.css}" rel="stylesheet">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div class="container">
+    <div class="contents">
     <h1>회원 목록</h1>
 
     <table border="1">
@@ -25,5 +28,8 @@
         <a th:href="@{/index}">메인페이지로</a>
 
     </table>
+
+    </div>
+</div>
 </body>
 </html>

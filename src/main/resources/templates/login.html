@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/style.css}" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
 </head>
 <body>
+<div class="container">
+    <div class="contents">
   <h1>Login Page</h1>
   <form action="/members/login" method="post" name="login">
   <p>아이디 <input type="text"/></p>
   <p>비밀번호 <input type="password"/></p>
   <input type="submit" value="로그인">
-      <a th:href="@{/index}">메인페이지로 </a>
+      <a th:href="@{/index}">home </a>
   </form>
+    </div>
+</div>
 </body>
 </html>

@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/style.css}" rel="stylesheet">
 <head>
     <meta charset="UTF-8">
     <title>Join</title>
 </head>
 <body>
-<h1>Join page</h1>
-    <p>여기가 어디??!!!<span th:text="${join}"></span></p>  <!-- 여기에서 join 값 출력 -->
+
+    <div class="container">
+        <div class="contents">
+
+            <h1>Join page</h1><!-- 여기에서 join 값 출력 -->
 <form action="/members/join" method="post" name="join">
 
     <p>이름<input type="text" name="name" placeholder="이름"/></p>
@@ -16,7 +20,9 @@
     <p th:if="${error}" th:text="${error}" style="color:red;"></p>
 
     <input type="submit" value="회원가입"/>
+    <a th:href="@{/index}">home</a>
     </form>
-
+        </div>
+    </div>
 </body>
 </html>
