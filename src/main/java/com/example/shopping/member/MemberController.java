@@ -20,21 +20,14 @@ public class MemberController {
         this.memberService = memberService;
     }
     @GetMapping("/index")
-    public String index(){
+    public String index(String id, Model model) {
+        model.addAttribute("id", id);
         return "index";
     }
 
-        @GetMapping("/login")
-        public String loginPage() {
-            return "login";
-        }
-
-    @GetMapping("/join")
-    public String joinPage(@RequestParam(value = "join", defaultValue = "회원가입 진행하기~~") String join, Model model) {
-        model.addAttribute("join", join);  // 파라미터가 없으면 기본값 '이름 미제공'을 사용
-        System.out.println("Received join param: " + join);  // 파라미터 값 출력
-
-        return "join";  // join.html 템플릿 반환 (앞에 슬래시 제거)
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 
     @GetMapping(value = "/admin/memberlist")
@@ -42,6 +35,26 @@ public class MemberController {
         model.addAttribute("members", memberService.findbyAll());
         return "admin/memberlist";
     }
+
+    @GetMapping("/join")
+    public String joinpage() {
+        return "join"; // → templates/join.html 보여줌
+    }
+
+    @GetMapping("/memberUpdate")
+    public String memberUpdate(){
+        return "memberUpdate";
+    }
+
+//    @GetMapping("/members/join")
+//    public String joinPage(@RequestParam(value = "join") String join, Model model) {
+//        model.addAttribute("join", join);  // 파라미터가 없으면 기본값 '이름 미제공'을 사용
+//        System.out.println("Received join param: " + join);  // 파라미터 값 출력
+//
+//        return "join";  // join.html 템플릿 반환 (앞에 슬래시 제거)
+//    }
+
+
 
     @PostMapping("/members/join")
     public String join(@ModelAttribute Member member, Model model) {
@@ -53,19 +66,22 @@ public class MemberController {
         memberService.save(member);
         return "redirect:/admin/memberlist";
     }
-
     @PostMapping("/members/login")
-    public String login (@ModelAttribute Member member, Model model){
+    public String login(@ModelAttribute Member member, Model model) {
         Optional<Member> result = memberService.login(member.getId(), member.getPw());
 
         if (result.isPresent()) {
             model.addAttribute("loginMember", result.get());
-            return "redirect:index";
+            System.out.println("로그인 성공: " + result.get());
+            return "redirect:/index?id=" + member.getId();
         } else {
-            model.addAttribute("error", "로그인 실패");
-            return "login";
+            System.out.println("로그인 실패: " + member);
+            model.addAttribute("error", "아이디 또는 비밀번호가 틀렸습니다.");
+            return "login"; // login.html로 이동
         }
     }
+
+
 
 
     }

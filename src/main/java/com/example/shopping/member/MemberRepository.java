@@ -10,4 +10,6 @@ public interface MemberRepository {
 
    Optional<Member> login(String id, String pw);
    List<Member> findbyAll();
+
+   Member updateMember(Member updateMember);
 }

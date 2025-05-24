@@ -22,7 +22,7 @@ public class MemberServiceImpl implements MemberRepository {
     }
     @Override
     public Optional<Member> login(String id, String pw) {
-        return memberRepository.login(id, pw);
+        return memberRepository.login(id, pw); // DB 조회
     }
 
     @Override
@@ -33,6 +33,11 @@ public class MemberServiceImpl implements MemberRepository {
     @Override
     public List<Member> findbyAll() {
         return memberRepository.findbyAll();
+    }
+
+    @Override
+    public Member updateMember(Member updateMember) {
+        return memberRepository.updateMember(updateMember);
     }
 
     public boolean existsById(String id) {

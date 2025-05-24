@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<link th:href="@{/style.css}" rel="stylesheet">
+
 
 <head>
+    <link th:href="@{/style.css}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>index</title>
 </head>
 <body>
 <div class="container">
     <div class="contents">
-    <h1>index page</h1>
-    <a th:href="@{/join}">회원가입</a>
-    <a th:href="@{/login}">로그인</a>
-    <a th:href="@{/admin/memberlist}">회원 목록</a>
+        <h1>index page</h1>
+        <a th:if="${id == null}" th:href="@{/join}">회원가입</a>
+        <a th:if="${id == null}" th:href="@{/login}">로그인</a>
+
+        <a th:href="@{/admin/memberlist}">회원 목록</a>
+        <a th:if="${id != null}" th:href="@{/memberUpdate}">내정보</a>
+
+        <a th:if="${id != null}" th:text="'안녕하세요, ' + ${id} + '님'"></a>
+
     </div>
 </div>
 </body>

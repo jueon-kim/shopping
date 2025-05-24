@@ -2,7 +2,6 @@ package com.example.shopping.member;
 
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.*;
@@ -62,6 +61,7 @@ public class Jdbcmember implements MemberRepository {
         return members;
     }
 
+
     public Member save(Member member) {
 
         String sql = "insert into member (name, phone, id, pw) values(?,?,?,?)";
@@ -110,15 +110,15 @@ public class Jdbcmember implements MemberRepository {
 
     @Override
     public Optional<Member> login(String id, String pw) {
-        String sql = "select * from member where id = ? and pw = ? ";
+        String sql = "SELECT * FROM member WHERE id = ? AND pw = ?";
 
         try (
                 Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                ResultSet rs = pstmt.executeQuery();
-        ){
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
             pstmt.setString(1, id);
             pstmt.setString(2, pw);
+            ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 Member member = new Member();
@@ -127,15 +127,40 @@ public class Jdbcmember implements MemberRepository {
                 member.setName(rs.getString("name"));
                 member.setPhone(rs.getString("phone"));
 
-                return Optional.of(member); // 로그인 성공 시 회원 객체 반환
+                return Optional.of(member);
             }
 
-
-        } catch (SQLException e){
-           e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return Optional.empty();
+    }
+    @Override
+    public Member updateMember(Member updateMember) {
+
+        String sql ="update set name =?, phone = ?, id = ?, pw = ?";
+
+        try (
+
+            Connection  conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+        ){
+            pstmt.setString(1, updateMember.getName());
+            pstmt.setString(2, updateMember.getPhone());
+            pstmt.setString(3, updateMember.getId());
+            pstmt.setString(4, updateMember.getPw());
+
+            pstmt.executeUpdate();
+            System.out.println("수정 완료");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("update 실패");
+        }
+        return updateMember;
+
     }
 
 
