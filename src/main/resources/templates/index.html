@@ -16,9 +16,9 @@
 
         <a th:href="@{/admin/memberlist}">회원 목록</a>
         <a th:if="${id != null}" th:href="@{/memberUpdate}">내정보</a>
-
         <a th:if="${id != null}" th:text="'안녕하세요, ' + ${id} + '님'"></a>
 
+        <a th:href="@{/board}">게시글</a>
     </div>
 </div>
 </body>

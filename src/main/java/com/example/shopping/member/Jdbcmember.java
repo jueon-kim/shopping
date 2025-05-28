@@ -61,7 +61,6 @@ public class Jdbcmember implements MemberRepository {
         return members;
     }
 
-
     public Member save(Member member) {
 
         String sql = "insert into member (name, phone, id, pw) values(?,?,?,?)";
@@ -77,9 +76,7 @@ public class Jdbcmember implements MemberRepository {
             pstmt.setString(4, member.getPw());
             pstmt.executeUpdate();
 
-            pstmt.executeUpdate();
             System.out.println("회원 등록 완료");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,6 +158,53 @@ public class Jdbcmember implements MemberRepository {
         }
         return updateMember;
 
+    }
+    @Override
+    public Board boardsave(Board board) {
+        String sql = "insert into board(title, content) values(?, ?)";
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setString(1, board.getTitle());
+            pstmt.setString(2, board.getContent());
+
+            pstmt.executeUpdate();
+            System.out.println("작성 완료");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return board;
+    }
+
+    @Override
+    public List<Board> findboard(Board board) {
+        String sql = "select * from board";
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                ResultSet rs = pstmt.executeQuery();
+
+        ) {
+            while(rs.next()) {
+
+                pstmt.setString(1, board.getTitle());
+                pstmt.setString(2, board.getContent());
+
+                pstmt.executeUpdate();
+                System.out.println("조회 완료");
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return List.of();
     }
 
 

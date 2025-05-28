@@ -43,4 +43,16 @@ public class MemberServiceImpl implements MemberRepository {
     public boolean existsById(String id) {
         return jdbcmember.existsById(id);
     }
+
+    @Override
+    public Board boardsave(Board board) {
+        return memberRepository.boardsave(board);
+    }
+
+    @Override
+    public List<Board> findboard(Board board) {
+        return memberRepository.findboard(board);
+    }
+
+
 }

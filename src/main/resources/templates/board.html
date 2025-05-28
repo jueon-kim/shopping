@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>board</title>
 </head>
 <body>
+    <form action="/board" method="post" name="board">
+        <a th:href="@{/boardwrite}">게시글 작성</a>
 
+
+        <a th:href="@{/index}">홈으로</a>
+    </form>
 </body>
 </html>
