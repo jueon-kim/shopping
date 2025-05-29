@@ -134,9 +134,9 @@ public class Jdbcmember implements MemberRepository {
         return Optional.empty();
     }
     @Override
-    public Member updateMember(Member updateMember) {
+    public boolean update(Member member) {
 
-        String sql ="update set name =?, phone = ?, id = ?, pw = ?";
+        String sql = "UPDATE member SET name = ?, phone = ?, pw = ? WHERE id = ?"; // 테이블 이름과 WHERE 절 추가
 
         try (
 
@@ -144,10 +144,10 @@ public class Jdbcmember implements MemberRepository {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
         ){
-            pstmt.setString(1, updateMember.getName());
-            pstmt.setString(2, updateMember.getPhone());
-            pstmt.setString(3, updateMember.getId());
-            pstmt.setString(4, updateMember.getPw());
+            pstmt.setString(1, member.getName());
+            pstmt.setString(2, member.getPhone());
+            pstmt.setString(3, member.getId());
+            pstmt.setString(4, member.getPw());
 
             pstmt.executeUpdate();
             System.out.println("수정 완료");
@@ -156,7 +156,7 @@ public class Jdbcmember implements MemberRepository {
             e.printStackTrace();
             System.out.println("update 실패");
         }
-        return updateMember;
+        return update(member);
 
     }
     @Override
@@ -181,30 +181,32 @@ public class Jdbcmember implements MemberRepository {
     }
 
     @Override
-    public List<Board> findboard(Board board) {
+    public List<Board> findboard() {
         String sql = "select * from board";
+        ArrayList<Board> boards = new ArrayList<>();
 
         try (
                 Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                ResultSet rs = pstmt.executeQuery();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
 
         ) {
             while(rs.next()) {
+                Board board = new Board();
 
-                pstmt.setString(1, board.getTitle());
-                pstmt.setString(2, board.getContent());
+                board.setTitle(rs.getString("title"));
+                board.setContent(rs.getString("content"));
 
-                pstmt.executeUpdate();
+                boards.add(board);
+
                 System.out.println("조회 완료");
-
 
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return List.of();
+        return boards;
     }
 
 

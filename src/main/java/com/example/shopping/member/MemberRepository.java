@@ -12,7 +12,7 @@ public interface MemberRepository {
    List<Member> findbyAll();
 
    Board boardsave(Board board);
-   List<Board> findboard(Board board);
+   List<Board> findboard();
 
-   Member updateMember(Member updateMember);
+   boolean update(Member member);
 }

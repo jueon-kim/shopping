@@ -27,26 +27,22 @@ public class MemberController {
         return "login";
     }
 
-    @GetMapping(value = "/admin/memberlist")
-    public String memberList(Model model){
-        model.addAttribute("members", memberService.findbyAll());
-        return "admin/memberlist";
-    }
+
 
     @GetMapping("/join")
     public String joinpage() {
         return "join"; // → templates/join.html 보여줌
     }
 
-    @GetMapping("/memberUpdate")
-    public String memberUpdate(){
-        return "memberUpdate";
-    }
+//    @GetMapping("/memberUpdate")
+//    public String memberUpdate(){
+//        return "memberUpdate";
+//    }
 
-    @GetMapping("board")
-    public String board() {
-        return "board";
-    }
+//    @GetMapping("board")
+//    public String board() {
+//        return "board";
+//    }
 
     @GetMapping("boardwrite")
     public String boardwriteForm() {
@@ -85,6 +81,30 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/memberupdate")
+    public String update() {
+//        boolean isUpdated = memberService.update(member);
+
+//        if (isUpdated) {
+//            // 업데이트 성공 시 처리 (예: 성공 메시지를 모델에 담고 완료 페이지로 리다이렉트)
+//            model.addAttribute("message", "회원 정보가 성공적으로 수정되었습니다.");
+//            return "index"; // updateSuccess.html 등의 뷰
+//        } else {
+//            // 업데이트 실패 시 처리 (예: 에러 메시지를 모델에 담고 수정 폼으로 다시 이동)
+//            model.addAttribute("error", "회원 정보 수정에 실패했습니다.");
+//            // 수정 폼으로 다시 이동하거나, 에러 페이지를 보여줄 수 있습니다.
+//            // 일반적으로 수정 폼에 기존 정보를 다시 보여주는 것이 좋습니다.
+//            model.addAttribute("member", member); // 기존 정보를 다시 모델에 담음
+            return "memberupdate";
+        }
+
+
+    @GetMapping(value = "/admin/memberlist")
+    public String memberList(Model model){
+        model.addAttribute("members", memberService.findbyAll());
+        return "admin/memberlist";
+    }
+
     @PostMapping("/boardwrite")
     public String boardsave(@ModelAttribute Board board, Model model){
         Board saveBoard = memberService.boardsave(board);
@@ -100,5 +120,11 @@ public class MemberController {
     }
 
 
+    @GetMapping(value ="/board")
+    public String boardlist(Model model){
+        model.addAttribute("boards", memberService.findboard());
+
+        return "board";
+    }
 
     }

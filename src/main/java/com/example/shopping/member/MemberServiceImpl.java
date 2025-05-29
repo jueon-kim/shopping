@@ -8,6 +8,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberRepository {
 
     private final MemberRepository memberRepository;
+    private Board board;
     private Member member;
     private Jdbcmember jdbcmember;
 
@@ -36,8 +37,8 @@ public class MemberServiceImpl implements MemberRepository {
     }
 
     @Override
-    public Member updateMember(Member updateMember) {
-        return memberRepository.updateMember(updateMember);
+    public boolean update(Member Member) {
+        return memberRepository.update(member);
     }
 
     public boolean existsById(String id) {
@@ -50,9 +51,8 @@ public class MemberServiceImpl implements MemberRepository {
     }
 
     @Override
-    public List<Board> findboard(Board board) {
-        return memberRepository.findboard(board);
+    public List<Board> findboard() {
+        return memberRepository.findboard();
     }
-
 
 }
