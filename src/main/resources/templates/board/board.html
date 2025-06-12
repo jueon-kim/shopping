@@ -5,16 +5,16 @@
     <title>board</title>
 </head>
 <body>
-    <form action="/board" method="post" name="board">
-        <a th:href="@{/boardwrite}">게시글 작성</a>
+    <form action="/board/write" method="post" name="board">
+        <a th:href="@{/board/write}">게시글 작성</a>
 
 
         <a th:href="@{/index}">홈으로</a>
-
-        <table border="1">
+    <p>제목</p>
+        <table>
             <tr th:each="board : ${boards}">
-                <td th:text="${board.title}">제목</td>
-                <td th:text="${board.content}">내용</td>
+                <td th:text="${board.title}"></td>
+<!--                <td th:text="${board.content}">내용</td>-->
             </tr>
         </table>
     </form>

@@ -8,7 +8,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberRepository {
 
     private final MemberRepository memberRepository;
-    private Board board;
     private Member member;
     private Jdbcmember jdbcmember;
 
@@ -45,14 +44,5 @@ public class MemberServiceImpl implements MemberRepository {
         return jdbcmember.existsById(id);
     }
 
-    @Override
-    public Board boardsave(Board board) {
-        return memberRepository.boardsave(board);
-    }
-
-    @Override
-    public List<Board> findboard() {
-        return memberRepository.findboard();
-    }
 
 }

@@ -1,5 +1,7 @@
 package com.example.shopping.member;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,16 @@ public class MemberController {
     public MemberController(MemberServiceImpl memberService) {
         this.memberService = memberService;
     }
+
     @GetMapping("/index")
-    public String index(String id, Model model) {
-        model.addAttribute("id", id);
+    public String index(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            Member loginMember = (Member) session.getAttribute("loginMember");
+            if (loginMember != null) {
+                model.addAttribute("id", loginMember.getId());
+            }
+        }
         return "index";
     }
 
@@ -26,8 +35,6 @@ public class MemberController {
     public String loginPage() {
         return "login";
     }
-
-
 
     @GetMapping("/join")
     public String joinpage() {
@@ -66,12 +73,21 @@ public class MemberController {
         memberService.save(member);
         return "redirect:/admin/memberlist";
     }
+
+    // 로그인
     @PostMapping("/members/login")
-    public String login(@ModelAttribute Member member, Model model) {
+    public String login(@ModelAttribute Member member, Model model,
+                        HttpServletRequest request) {
         Optional<Member> result = memberService.login(member.getId(), member.getPw());
 
         if (result.isPresent()) {
             model.addAttribute("loginMember", result.get());
+
+            //로그인 세션 설정
+            HttpSession session = request.getSession();
+            session.setAttribute("loginMember", member);
+            session.setMaxInactiveInterval(60 * 30); // 세션 유지 시간
+
             System.out.println("로그인 성공: " + result.get());
             return "redirect:/index?id=" + member.getId();
         } else {
@@ -80,23 +96,41 @@ public class MemberController {
             return "login"; // login.html로 이동
         }
     }
+    //로그아웃 세션 종료
+    @PostMapping("/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "redirect:/index";
+    }
 
-    @GetMapping("/memberupdate")
-    public String update() {
-//        boolean isUpdated = memberService.update(member);
-
-//        if (isUpdated) {
-//            // 업데이트 성공 시 처리 (예: 성공 메시지를 모델에 담고 완료 페이지로 리다이렉트)
-//            model.addAttribute("message", "회원 정보가 성공적으로 수정되었습니다.");
-//            return "index"; // updateSuccess.html 등의 뷰
-//        } else {
-//            // 업데이트 실패 시 처리 (예: 에러 메시지를 모델에 담고 수정 폼으로 다시 이동)
-//            model.addAttribute("error", "회원 정보 수정에 실패했습니다.");
-//            // 수정 폼으로 다시 이동하거나, 에러 페이지를 보여줄 수 있습니다.
-//            // 일반적으로 수정 폼에 기존 정보를 다시 보여주는 것이 좋습니다.
-//            model.addAttribute("member", member); // 기존 정보를 다시 모델에 담음
-            return "memberupdate";
+    @GetMapping("/mypage")
+    public String mypage(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
         }
+
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            // 세션에 회원 정보 없으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
+        }
+
+        // 로그인한 회원 정보 DB에서 새로 조회 (필요시)
+        Optional<Member> memberInfo = memberService.findById(loginMember.getId());
+        model.addAttribute("member", memberInfo);
+
+        if (memberInfo.isPresent()) {
+            model.addAttribute("member", memberInfo.get());
+
+            return "mypage";
+
+        }else {
+            return "redirect:/login";
+        }
+    }
+
 
 
     @GetMapping(value = "/admin/memberlist")
@@ -105,26 +139,5 @@ public class MemberController {
         return "admin/memberlist";
     }
 
-    @PostMapping("/boardwrite")
-    public String boardsave(@ModelAttribute Board board, Model model){
-        Board saveBoard = memberService.boardsave(board);
-
-        if(saveBoard != null){
-
-            return "redirect:/board";
-        }else {
-            model.addAttribute("error", "게시글 저장에 실패 했습니다");
-
-            return "redirect:boardwrite";
-        }
-    }
-
-
-    @GetMapping(value ="/board")
-    public String boardlist(Model model){
-        model.addAttribute("boards", memberService.findboard());
-
-        return "board";
-    }
 
     }

@@ -159,55 +159,5 @@ public class Jdbcmember implements MemberRepository {
         return update(member);
 
     }
-    @Override
-    public Board boardsave(Board board) {
-        String sql = "insert into board(title, content) values(?, ?)";
-
-        try (
-                Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-        ) {
-            pstmt.setString(1, board.getTitle());
-            pstmt.setString(2, board.getContent());
-
-            pstmt.executeUpdate();
-            System.out.println("작성 완료");
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return board;
-    }
-
-    @Override
-    public List<Board> findboard() {
-        String sql = "select * from board";
-        ArrayList<Board> boards = new ArrayList<>();
-
-        try (
-                Connection conn = getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-
-        ) {
-            while(rs.next()) {
-                Board board = new Board();
-
-                board.setTitle(rs.getString("title"));
-                board.setContent(rs.getString("content"));
-
-                boards.add(board);
-
-                System.out.println("조회 완료");
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return boards;
-    }
-
 
 }

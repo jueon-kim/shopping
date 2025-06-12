@@ -11,8 +11,5 @@ public interface MemberRepository {
    Optional<Member> login(String id, String pw);
    List<Member> findbyAll();
 
-   Board boardsave(Board board);
-   List<Board> findboard();
-
    boolean update(Member member);
 }
