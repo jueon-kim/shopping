@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>회원 정보 수정</title>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
 </head>
 <body>
-<h1>mypage</h1>
-<form action="mypage" method="get">
-    <span th:text="${member.id}"></span>
-    <span th:text="${member.name}"></span>
-    <span th:text="${member.phone}"></span>
-    <form>
+<form action="/mypage" method="post">
+<h1>마이페이지</h1>
+<p th:text="'아이디: ' + ${member.id}"></p>
+<p th:text="'이름: ' + ${member.name}"></p>
 
+    <h2>내가 쓴 게시글</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>내용</th>
+            <th>수정</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+            <td th:text="${board.id}"></td>
+            <td th:text="${board.title}"></td>
+            <td th:text="${board.content}"></td>
+            <td>
+                <a th:href="@{/board/edit(id=${board.id})}">수정</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<a th:href="@{/edit}">글 수정</a>
+<a th:href="@{/index}">홈으로</a>
+
+    </form>
 </body>
 </html>

@@ -84,30 +84,34 @@ public class Jdbcboard implements BoardRepository {
         return boards;
     }
 
-    @Override
-    public Board boardupdate(Board board) {
-        String sql = "UPDATE board SET title = ?, content = ? WHERE id = ?";
-        try (
-                Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-        ) {
-            pstmt.setString(1, board.getTitle());
-            pstmt.setString(2, board.getContent());
-            pstmt.setLong(3, board.getId()); // Board 클래스의 id 필드가 Long 타입이라고 가정
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("게시글 수정 완료 (ID: " + board.getId() + ")");
-                return board;
-            } else {
-                System.out.println("게시글 수정 실패 (ID: " + board.getId() + "): 해당 ID의 게시글이 없거나 업데이트 실패");
-                return null;
+
+    public List<Board> findByMemberId(String memberId) {
+        List<Board> result = new ArrayList<>();
+        String sql = "SELECT * FROM board WHERE member_id = ?";  // ✅ 컬럼명 member_id로 변경
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, memberId);  // ✅ memberId는 Long
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Board board = new Board();
+                board.setId(rs.getLong("id"));
+                board.setTitle(rs.getString("title"));
+                board.setContent(rs.getString("content"));
+                result.add(board);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("게시글 업데이트 중 데이터베이스 오류 발생");
-            return null;
         }
+
+        return result;
     }
+
+
+
 
     @Override
     public Board findById(Long id) {
@@ -130,4 +134,31 @@ public class Jdbcboard implements BoardRepository {
         }
         return null;
     }
+
+    @Override
+    public boolean update(Board board) {
+        String sql = "UPDATE board SET title = ?, content = ? WHERE id = ?";
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, board.getTitle());
+            pstmt.setString(2, board.getContent());
+            pstmt.setLong(3, board.getId());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("게시글 수정 완료 (ID: " + board.getId() + ")");
+                return true; // ✅ 성공 시 true 반환
+            } else {
+                System.out.println("게시글 수정 실패 (ID: " + board.getId() + ")");
+                return false; // ✅ 실패 시 false 반환
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("게시글 업데이트 중 데이터베이스 오류 발생");
+            return false;
+        }
+    }
+
 }

@@ -8,7 +8,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberRepository {
 
     private final MemberRepository memberRepository;
-    private Member member;
     private Jdbcmember jdbcmember;
 
     public MemberServiceImpl(MemberRepository memberRepository){
@@ -30,18 +29,15 @@ public class MemberServiceImpl implements MemberRepository {
         return memberRepository.findById(id);
     }
 
+
     @Override
     public List<Member> findbyAll() {
         return memberRepository.findbyAll();
     }
 
     @Override
-    public boolean update(Member Member) {
+    public boolean update(Member member) {
         return memberRepository.update(member);
-    }
-
-    public boolean existsById(String id) {
-        return jdbcmember.existsById(id);
     }
 
 

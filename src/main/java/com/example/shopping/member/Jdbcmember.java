@@ -82,57 +82,54 @@ public class Jdbcmember implements MemberRepository {
         }
         return member;
     }
-
     @Override
     public Optional<Member> findById(String id) {
-        return Optional.empty();
-    }
-
-    public boolean existsById(String id) {
-        String sql = "SELECT COUNT(*) FROM member WHERE id = ?";
+        String sql = "SELECT * FROM member WHERE id = ?";
         try (
                 Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
+                PreparedStatement pstmt = conn.prepareStatement(sql);
         ) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public Optional<Member> login(String id, String pw) {
-        String sql = "SELECT * FROM member WHERE id = ? AND pw = ?";
-
-        try (
-                Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)
-        ) {
-            pstmt.setString(1, id);
-            pstmt.setString(2, pw);
-            ResultSet rs = pstmt.executeQuery();
-
             if (rs.next()) {
                 Member member = new Member();
                 member.setId(rs.getString("id"));
                 member.setPw(rs.getString("pw"));
                 member.setName(rs.getString("name"));
                 member.setPhone(rs.getString("phone"));
-
                 return Optional.of(member);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return Optional.empty();
     }
+
+
+    @Override
+    public Optional<Member> login(String id, String pw) {
+        String sql = "SELECT * FROM member WHERE id = ? AND pw = ?";
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setString(1, id);
+            pstmt.setString(2, pw);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getString("id"));
+                member.setPw(rs.getString("pw"));
+                member.setName(rs.getString("name"));
+                member.setPhone(rs.getString("phone"));
+                return Optional.of(member);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     @Override
     public boolean update(Member member) {
 
