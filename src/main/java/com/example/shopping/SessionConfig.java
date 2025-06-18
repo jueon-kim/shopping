@@ -17,7 +17,7 @@ public class SessionConfig {
         if (session != null) {
             Member member = (Member) session.getAttribute("loginMember");
             if (member != null) {
-                return member.getId();
+                return member.getId(); // String 타입 반환
             }
         }
         return null;

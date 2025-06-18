@@ -1,6 +1,5 @@
 package com.example.shopping.board;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +9,6 @@ public class BoardServiceImple {
 
     private final BoardRepository boardRepository;
 
-    @Autowired
     public BoardServiceImple(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
@@ -27,11 +25,18 @@ public class BoardServiceImple {
         return boardRepository.findById(id);
     }
 
-    public boolean updateBoard(Board board) {
-        return boardRepository.update(board);
+    public boolean updateBoard(Board updatedBoard) {
+        Board existing = boardRepository.findById(updatedBoard.getId());
+        if (existing == null) {
+            return false;
+        }
+        existing.setTitle(updatedBoard.getTitle());
+        existing.setContent(updatedBoard.getContent());
+        boardRepository.update(existing);  // 혹은 update 메서드, save로도 가능
+        return true;
     }
 
-    public List<Board> findByMemberId(String id) {
-        return boardRepository.findByMemberId(id);
+    public List<Board> findByWriter(String writer) {
+        return boardRepository.findByWriter(writer);
     }
 }

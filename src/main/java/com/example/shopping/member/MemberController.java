@@ -6,10 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +53,7 @@ public class MemberController {
 
     @PostMapping("/members/join")
     public String join(@ModelAttribute Member member, Model model) {
-        Optional<Member> existingMember = memberService.findById(member.getId());
+        Optional<Member> existingMember = memberService.findById(String.valueOf(member.getId()));
 
         if (existingMember.isPresent()) {
             model.addAttribute("error", "이미 사용 중인 아이디입니다.");
@@ -71,21 +68,18 @@ public class MemberController {
     // 로그인
     @PostMapping("/members/login")
     public String login(@ModelAttribute Member member, Model model, HttpServletRequest request) {
-        Optional<Member> result = memberService.login(member.getId(), member.getPw());
-
+        Optional<Member> result = memberService.login(member.getId(), member.getPw());  // id는 String
         if (result.isPresent()) {
             Member loginMember = result.get();
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", loginMember);
-
-            System.out.println("로그인 성공: " + loginMember);
             return "redirect:/index";
         } else {
-            System.out.println("로그인 실패");
             model.addAttribute("error", "아이디 또는 비밀번호가 틀렸습니다.");
             return "login";
         }
     }
+
 
 
     //로그아웃 세션 종료
@@ -105,12 +99,13 @@ public class MemberController {
         Member loginMember = (Member) session.getAttribute("loginMember");
         model.addAttribute("member", loginMember);
 
-        // ✅ 게시글 조회
-        List<Board> boards = boardService.findByMemberId(loginMember.getId());
+        // 작성자 ID는 문자열로 전달
+        List<Board> boards = boardService.findByWriter(String.valueOf(loginMember.getId()));
         model.addAttribute("boards", boards);
 
         return "mypage";
     }
+
 
 
 

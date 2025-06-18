@@ -6,14 +6,23 @@
 </head>
 <body>
 <h1>게시글 수정</h1>
+<div class="container">
+  <form th:action="@{/board/edit}" method="post" th:object="${board}">
+    <input type="hidden" th:field="*{id}" />
+    <p>
+      <label for="title">제목:</label><br />
+      <input type="text" id="title" th:field="*{title}" required />
+    </p>
+    <p>
+      <label for="content">내용:</label><br />
+      <textarea id="content" th:field="*{content}" rows="10" cols="50" required></textarea>
+    </p>
+    <p>
+      <input type="submit" value="수정 완료" />
+      <a th:href="@{/board}">취소</a>
+    </p>
+  </form>
 
-<form th:action="@{/board/edit}" th:object="${board}" method="post">
-  <input type="hidden" th:field="*{id}" />
-  <label>제목: <input type="text" th:field="*{title}" /></label><br>
-  <label>내용: <textarea th:field="*{content}"></textarea></label><br>
-  <button type="submit">수정 완료</button>
-</form>
-
-
+</div>
 </body>
 </html>

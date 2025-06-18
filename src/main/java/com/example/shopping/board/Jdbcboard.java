@@ -38,106 +38,91 @@ public class Jdbcboard implements BoardRepository {
         return conn;
     }
 
+    // 게시글 저장
     @Override
     public Board boardsave(Board board) {
-        String sql = "insert into board(title, content) values(?, ?)";
+        String sql = "INSERT INTO board (title, content, writer) VALUES (?, ?, ?)";
+
         try (
                 Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // 자동 생성 키 반환 설정
+                PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
             pstmt.setString(1, board.getTitle());
             pstmt.setString(2, board.getContent());
+            pstmt.setString(3, board.getWriter()); // ✅ writer 저장
+
             pstmt.executeUpdate();
 
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                board.setId(generatedKeys.getLong(1)); // 생성된 ID를 Board 객체에 설정
+                board.setId(generatedKeys.getLong(1));
             }
-            System.out.println("게시글 작성 완료 (ID: " + board.getId() + ")");
+            System.out.println("게시글 저장 완료 (ID: " + board.getId() + ")");
             return board;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null; // 오류 발생 시 null 반환
+            return null;
         }
     }
 
+    // 전체 게시글 조회
     @Override
     public List<Board> findboard() {
-        String sql = "select id, title, content from board"; // ID도 함께 조회
-        ArrayList<Board> boards = new ArrayList<>();
+        String sql = "SELECT id, title, content, writer FROM board";
+        List<Board> boards = new ArrayList<>();
+
         try (
                 Connection conn = getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
+                ResultSet rs = stmt.executeQuery(sql)
         ) {
             while (rs.next()) {
                 Board board = new Board();
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
                 board.setContent(rs.getString("content"));
+                board.setWriter(rs.getString("writer"));
                 boards.add(board);
-                System.out.println("게시글 조회 완료 (ID: " + board.getId() + ")");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return boards;
     }
 
-
-    public List<Board> findByMemberId(String memberId) {
-        List<Board> result = new ArrayList<>();
-        String sql = "SELECT * FROM board WHERE member_id = ?";  // ✅ 컬럼명 member_id로 변경
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, memberId);  // ✅ memberId는 Long
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                Board board = new Board();
-                board.setId(rs.getLong("id"));
-                board.setTitle(rs.getString("title"));
-                board.setContent(rs.getString("content"));
-                result.add(board);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-
-
-
+    // ID로 게시글 조회
     @Override
     public Board findById(Long id) {
-        String sql = "SELECT id, title, content FROM board WHERE id = ?";
+        String sql = "SELECT id, title, content, writer FROM board WHERE id = ?";
+
         try (
                 Connection conn = getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql);
+                PreparedStatement pstmt = conn.prepareStatement(sql)
         ) {
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
+
             if (rs.next()) {
                 Board board = new Board();
                 board.setId(rs.getLong("id"));
                 board.setTitle(rs.getString("title"));
                 board.setContent(rs.getString("content"));
+                board.setWriter(rs.getString("writer"));
                 return board;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
+    // 게시글 수정
     @Override
     public boolean update(Board board) {
         String sql = "UPDATE board SET title = ?, content = ? WHERE id = ?";
+
         try (
                 Connection conn = getConnection();
                 PreparedStatement pstmt = conn.prepareStatement(sql)
@@ -147,18 +132,38 @@ public class Jdbcboard implements BoardRepository {
             pstmt.setLong(3, board.getId());
 
             int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                System.out.println("게시글 수정 완료 (ID: " + board.getId() + ")");
-                return true; // ✅ 성공 시 true 반환
-            } else {
-                System.out.println("게시글 수정 실패 (ID: " + board.getId() + ")");
-                return false; // ✅ 실패 시 false 반환
-            }
+            return affectedRows > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("게시글 업데이트 중 데이터베이스 오류 발생");
             return false;
         }
     }
 
+    // 작성자(writer)로 게시글 검색
+    @Override
+    public List<Board> findByWriter(String writer) {
+        String sql = "SELECT id, title, content, writer FROM board WHERE writer = ?";
+        List<Board> boards = new ArrayList<>();
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, writer);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Board board = new Board();
+                board.setId(rs.getLong("id"));
+                board.setTitle(rs.getString("title"));
+                board.setContent(rs.getString("content"));
+                board.setWriter(rs.getString("writer"));
+                boards.add(board);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return boards;
+    }
 }

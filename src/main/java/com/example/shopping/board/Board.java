@@ -1,30 +1,26 @@
 package com.example.shopping.board;
 
 public class Board {
-    private String title;
-    private String content;
-    private String write;
-    private Long id;
-    private String memberid;
+    private Long id;          // 게시글 고유 ID
+    private String title;     // 제목
+    private String content;   // 내용
+    private String writer;    // 작성자 ID (Member의 id를 문자열로 저장)
 
-    public String getMemberid() {
-        return memberid;
+    public Board() {}
+
+    public Board(Long id, String title, String content, String writer) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
     }
 
-    public void setMember_id(String member_id) {
-        this.memberid = member_id;
+    public Long getId() {
+        return id;
     }
 
-    public String getWrite() {
-        return write;
-    }
-
-    public void setWrite(String write) {
-        this.write = write;
-    }
-
-    public Board() {
-
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -43,22 +39,11 @@ public class Board {
         this.content = content;
     }
 
-    public Long getId() {
-        return id;
+    public String getWriter() {
+        return writer;
     }
 
-
-
-    public void setId(Long id) {
-        this.id = id;
-
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
-
-    public Board(String title, String content, Long id, String write, String memberid) {
-        this.title = title;
-        this.content = content;
-        this.id = id;
-        this.write = write;
-        this.memberid = memberid;
-        }
 }

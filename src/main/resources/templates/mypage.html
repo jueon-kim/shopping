@@ -26,7 +26,8 @@
             <td th:text="${board.title}"></td>
             <td th:text="${board.content}"></td>
             <td>
-                <a th:href="@{/board/edit(id=${board.id})}">수정</a>
+                <a th:href="@{'/board/edit/' + ${board.id}}">수정</a>
+
             </td>
         </tr>
         </tbody>

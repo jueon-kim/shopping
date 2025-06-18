@@ -3,11 +3,9 @@ package com.example.shopping.board;
 import java.util.List;
 
 public interface BoardRepository {
-    Board boardsave(Board board);
-    List<Board> findboard();
-    List<Board> findByMemberId(String memberId); // 작성자 ID가 String인 경우
-
-    boolean update(Board board);
-    Board findById(Long id); // 게시글 ID로 조회하는 메소드 추가 (필요에 따라
-
+    Board boardsave(Board board);         // 저장
+    List<Board> findboard();              // 전체 조회
+    Board findById(Long id);              // ID로 조회
+    boolean update(Board board);          // 수정
+    List<Board> findByWriter(String writer); // 작성자로 조회
 }
