@@ -13,9 +13,22 @@
 }
 
 .contents > p {
-    text-align: center;
+
     align-items: center;
     display: grid;
+    text-align: right;
 }
 
+.idbox, .pwbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
 
+.board{
+    text-align:left;
+    }
+
+    .titletext > span{
+    display: flex;
+    }

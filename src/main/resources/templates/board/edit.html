@@ -4,15 +4,21 @@
   <meta charset="UTF-8">
   <title>게시글 수정</title>
 </head>
+<link th:href="@{/style.css}" rel="stylesheet">
 <body>
-<h1>게시글 수정</h1>
+
 <div class="container">
   <form th:action="@{/board/edit}" method="post" th:object="${board}">
+    <h1>게시글 수정</h1>
     <input type="hidden" th:field="*{id}" />
-    <p>
-      <label for="title">제목:</label><br />
-      <input type="text" id="title" th:field="*{title}" required />
-    </p>
+
+    <div class="titletext">
+      <span>
+        <label for="title">제목:</label><br />
+        <input type="text" id="title" th:field="*{title}" required />
+      </span>
+    </div>
+
     <p>
       <label for="content">내용:</label><br />
       <textarea id="content" th:field="*{content}" rows="10" cols="50" required></textarea>

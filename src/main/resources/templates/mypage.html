@@ -4,37 +4,44 @@
     <meta charset="UTF-8">
     <title>마이페이지</title>
 </head>
+<link th:href="@{/style.css}" rel="stylesheet">
 <body>
 <form action="/mypage" method="post">
-<h1>마이페이지</h1>
-<p th:text="'아이디: ' + ${member.id}"></p>
-<p th:text="'이름: ' + ${member.name}"></p>
+    <div class="container">
 
-    <h2>내가 쓴 게시글</h2>
+        <div>
+            <h1>마이페이지</h1>
+            <p th:text="'아이디: ' + ${member.id}"></p>
+            <p th:text="'이름: ' + ${member.name}"></p>
+        </div>
+
+    <div>
+    <h2>작성한글</h2>
     <table>
         <thead>
         <tr>
             <th>번호</th>
             <th>제목</th>
-            <th>내용</th>
+<!--            <th>내용</th>-->
             <th>수정</th>
         </tr>
         </thead>
+
         <tbody>
         <tr th:each="board : ${boards}">
             <td th:text="${board.id}"></td>
             <td th:text="${board.title}"></td>
-            <td th:text="${board.content}"></td>
+<!--            <td th:text="${board.content}"></td>-->
             <td>
                 <a th:href="@{'/board/edit/' + ${board.id}}">수정</a>
-
             </td>
         </tr>
         </tbody>
     </table>
-<a th:href="@{/edit}">글 수정</a>
-<a th:href="@{/index}">홈으로</a>
-
+        <a th:href="@{/edit}">글 수정</a>
+        <a th:href="@{/index}">홈으로</a>
+    </div>
+    </div>
     </form>
 </body>
 </html>

@@ -4,19 +4,29 @@
     <meta charset="UTF-8">
     <title>board</title>
 </head>
+<link th:href="@{/style.css}" rel="stylesheet">
 <body>
     <form action="/board/write" method="post" name="board">
-        <a th:href="@{/board/write}">게시글 작성</a>
 
+       <div class="container">
+           <div>
 
-        <a th:href="@{/index}">홈으로</a>
-    <p>제목</p>
-        <table>
+           </div>
+        <table class="board">
+            <tr>
+                <th><a th:href="@{/board/write}">게시글 작성</a></th>
+                <th><a th:href="@{/index}">홈으로</a></th>
+            </tr>
+            <tr>
+                <th>제목</th>
+                <th>내용</th>
+            </tr>
             <tr th:each="board : ${boards}">
+                <td th:text="${board.content}"></td>
                 <td th:text="${board.title}"></td>
-                <td th:text="${board.content}">내용</td>
             </tr>
         </table>
+       </div>
     </form>
 </body>
 </html>

@@ -10,8 +10,20 @@
     <div class="contents">
         <h1>Login Page</h1>
             <form action="/members/login" method="post" name="login">
-                <p>아이디 <input name="id" type="text"/></p>   <!-- name 으로 변경 -->
-                <p>비밀번호 <input name="pw" type="password"/></p>
+                <div class="logincontent">
+
+                    <div class="idbox">
+                        <p>아이디 </p>
+                        <input name="id" type="text"/>
+                    </div>
+
+                    <div class="pwbox">
+                        <p>비밀번호</p>
+                        <input name="pw" type="password"/>
+                    </div>
+
+                </div>
+
                 <input type="submit" value="로그인">
                 <a th:href="@{/index}">home </a>
             </form>
