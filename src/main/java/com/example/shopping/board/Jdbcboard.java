@@ -166,4 +166,20 @@ public class Jdbcboard implements BoardRepository {
 
         return boards;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        String sql = "delete from board where id = ?";
+
+        try (
+                Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+        ) {
+            pstmt.setLong(1, id);
+            pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            throw new RuntimeException("게시글 삭제 중 오류 발생", e);
+        }
+    }
 }

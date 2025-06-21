@@ -2,14 +2,21 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-.container {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    text-align: center;
+
+html, body{
     height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      align-items: center;
+      justify-content: center;
+      justify-items: center;
+      text-align: center;
 }
 
 .contents > p {
@@ -31,4 +38,11 @@
 
     .titletext > span{
     display: flex;
+    }
+
+    textarea {
+        resize: none; /* 변경 불가능 */
+        resize: both; /* 변경 가능 */
+        resize: vertical; /* 높이만 변경 가능 */
+        resize: none; /* 너비만 변경 가능 */
     }

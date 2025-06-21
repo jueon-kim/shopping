@@ -12,7 +12,7 @@
 | Backend  | Java17, SpringBoot    | 
 | Frontend | HTML, CSS3, Thymeleaf | 
 | Database | MySQL                 | 
-| Toll     | Mac, IntelliJ         |   
+| OS & IDE | Mac, IntelliJ         |   
 
 
 ## Member JDBC
@@ -38,9 +38,9 @@
 | 메서드 이름           | 설명        |
 | ---------------- | ------------|
 | index       | 메인 페이지       | 
-| loginPage      | 로그인 폼 이동     |
-| joinpage       | 회원가입 폼 이동    | 
-| boardwriteForm | 게시글 작성 폼 이동  |
+| loginPage      | 로그인 폼      |
+| joinpage       | 회원가입 폼     | 
+| boardwriteForm | 게시글 작성 폼   |
 | join        | 회원가입 처리       |
 | login      | 로그인 처리       |
 | logout      | 로그아웃 처리       |
@@ -51,14 +51,14 @@
 ## Board Controller
 | 메서드 이름        |  설명      | 
 | ------------- | -------- |
-| boardWriteForm | 게시글 작성 폼 이동 | 
-| boardsave | 게시글 저장 처리 |
-| boardlist | 게시글 목록 조회 |
-| editBoardForm | 게시글 수정 폼 이동 |
-| boardUpdate   | 게시글 수정 처리 |
+| boardWriteForm | 게시글 작성 폼  | 
+| boardsave | 게시글 저장  |
+| boardlist | 게시글 목록  |
+| editBoardForm | 게시글 수정 폼  |
+| boardUpdate   | 게시글 수정 |
 
 
-## DB
+# DB
 ## 게시판 DB 
 | colum     | 설명        |
 |-----------|-----------|
@@ -77,10 +77,9 @@
 | pw    | 비밀번호 |
 
 
-* 추가 작엄 
+### 추가 작엄 
 * 2025.06.20 UI 변경, Readme.file 업데이트 계획 추가
-
-<br>
+* 2025.06.21 삭제 기능 추가 
 
 ### 업데이트 계획 version2
 

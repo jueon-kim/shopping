@@ -106,11 +106,6 @@ public class MemberController {
         return "mypage";
     }
 
-
-
-
-
-
     @GetMapping(value = "/admin/memberlist")
     public String memberList(Model model){
         model.addAttribute("members", memberService.findbyAll());

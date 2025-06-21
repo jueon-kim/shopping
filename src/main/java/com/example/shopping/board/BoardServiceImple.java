@@ -39,4 +39,8 @@ public class BoardServiceImple {
     public List<Board> findByWriter(String writer) {
         return boardRepository.findByWriter(writer);
     }
+
+    public void deleteById(Long id) {
+        boardRepository.deleteById(id);
+    }
 }

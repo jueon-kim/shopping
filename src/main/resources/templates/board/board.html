@@ -8,10 +8,8 @@
 <body>
     <form action="/board/write" method="post" name="board">
 
-       <div class="container">
-           <div>
+<!--       <div class="container"></div>-->
 
-           </div>
         <table class="board">
             <tr>
                 <th><a th:href="@{/board/write}">게시글 작성</a></th>
@@ -22,6 +20,7 @@
                 <th>내용</th>
             </tr>
             <tr th:each="board : ${boards}">
+                <td th:text="${board.id}"></td>
                 <td th:text="${board.content}"></td>
                 <td th:text="${board.title}"></td>
             </tr>

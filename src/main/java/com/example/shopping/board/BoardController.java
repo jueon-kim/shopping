@@ -57,16 +57,6 @@ public class BoardController {
         return "board/board"; // boardList.html (게시글 목록)
     }
 
-//    @GetMapping("/board/update/{id}")
-//    public String boardUpdateForm(@PathVariable Long id, Model model) {
-//        Board board = boardService.findById(id);
-//        if (board != null) {
-//            model.addAttribute("board", board);
-//            return "board/boardUpdate"; // boardUpdate.html (수정 폼)
-//        } else {
-//            return "redirect:/board"; // 해당 게시글이 없으면 목록으로 리다이렉트
-//        }
-//    }
 // 수정 폼 보여주기
 @GetMapping("/edit/{id}")
 public String editBoardForm(@PathVariable("id") Long id, Model model) {
@@ -80,17 +70,6 @@ public String editBoardForm(@PathVariable("id") Long id, Model model) {
 }
 
 
-//    @PostMapping("/edit")
-//    public String boardUpdate(@ModelAttribute Board board, Model model) {
-//        boolean success = boardService.updateBoard(board);
-//        if (success) {
-//            return "redirect:/board";
-//        } else {
-//            model.addAttribute("error", "게시글 수정에 실패했습니다.");
-//            model.addAttribute("board", board);
-//            return "board/edit";
-//        }
-//    }
 
     // 수정 처리 (POST)
     @PostMapping("/edit")
@@ -105,13 +84,11 @@ public String editBoardForm(@PathVariable("id") Long id, Model model) {
         }
     }
 
-//    public void updateBoard(Long id, Board updatedBoard) {
-//        Optional<Board> optional = Optional.ofNullable(boardRepository.findById(id));
-//        if (optional.isPresent()) {
-//            Board board = optional.get();
-//            board.setTitle(updatedBoard.getTitle());
-//            board.setContent(updatedBoard.getContent());
-//            boardRepository.boardsave(board); // DB 반영
-//        }
-//    }
+    //게시글 삭제
+    @PostMapping("/delete/{id}")
+    public String deleteboard(@PathVariable Long id) {
+        boardService.deleteById(id);
+        return "redirect:/mypage";
+
+    }
 }

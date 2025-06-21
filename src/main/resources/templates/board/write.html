@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<link th:href="@{/style.css}" rel="stylesheet">
 <body>
 <form action="/board/write" method="post" name="board">
-    <div>
+    <div style="text-align: center">
         <p>제목
             <input type="text" name="title" placeholder="제목"/>
         </p>
 
-        <p>게시글
-            <input type="text" name="content" placeholder="내용"/>
+        <p>
+            <textarea type="text" name="content" rows="10" cols="50" placeholder="내용"></textarea>
         </p>
 
         <input type="submit" value="글작성"/>

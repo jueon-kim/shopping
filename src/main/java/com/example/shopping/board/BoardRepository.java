@@ -8,4 +8,6 @@ public interface BoardRepository {
     Board findById(Long id);              // ID로 조회
     boolean update(Board board);          // 수정
     List<Board> findByWriter(String writer); // 작성자로 조회
+
+    void deleteById(Long id);
 }
